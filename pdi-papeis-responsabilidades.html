@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDI - Papéis e Responsabilidades | Senac</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul: #004C94;
+      --azul-dark: #003366;
+      --azul-light: #1A6FBF;
+      --laranja: #F7941D;
+      --laranja-light: #FBBF6A;
+      --bg: #F3F6FA;
+      --text-heading: #002040;
+      --text-body: #334155;
+      --text-muted: #7A8BA0;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: var(--font-body);
+      color: var(--text-body);
+      overflow-x: hidden;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes respFade {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--laranja);
+      outline-offset: 2px;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,76,148,0.15); border-radius: 3px; }
+
+    /* ─── Header ─── */
+    .header {
+      background: linear-gradient(165deg, #003366 0%, #004C94 50%, #0060B8 100%);
+      padding: 48px 24px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-orb-1 {
+      position: absolute; top: -60px; right: -40px; width: 200px; height: 200px;
+      border-radius: 50%; background: rgba(247,148,29,0.08); pointer-events: none;
+    }
+    .header-orb-2 {
+      position: absolute; bottom: -30px; left: -20px; width: 120px; height: 120px;
+      border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block; padding: 5px 16px; border-radius: 100px;
+      background: rgba(247,148,29,0.15); border: 1px solid rgba(247,148,29,0.3);
+      font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--laranja-light); margin-bottom: 16px;
+    }
+    .header h1 {
+      font-family: var(--font-display); font-size: clamp(32px, 4vw, 44px);
+      font-weight: 400; line-height: 1.2; color: #fff; max-width: 650px; margin: 0 auto 14px;
+    }
+    .header-subtitle {
+      font-size: 16px; color: rgba(255,255,255,0.65); max-width: 500px;
+      margin: 0 auto; line-height: 1.6; font-weight: 300;
+    }
+    .intro-box {
+      max-width: 640px; margin: 22px auto 0; padding: 20px 24px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; border-left: 3px solid var(--laranja); text-align: left;
+    }
+    .intro-box p {
+      font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.7; font-weight: 300;
+    }
+    .intro-box p + p { margin-top: 10px; }
+
+    /* ─── Methodology ─── */
+    .method-section { text-align: center; padding: 24px 20px 8px; }
+    .method-btn {
+      background: rgba(255,255,255,0.8); border: 1px solid rgba(0,76,148,0.12);
+      border-radius: 12px; padding: 11px 20px; color: var(--azul); cursor: pointer;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-height: 44px;
+    }
+    .method-btn.active {
+      background: #fff; border: 1.5px solid var(--azul);
+      box-shadow: 0 4px 16px rgba(0,76,148,0.1);
+    }
+    .method-arrow {
+      display: inline-block; font-size: 10px; transition: transform 0.3s ease;
+    }
+    .method-btn.active .method-arrow { transform: rotate(180deg); }
+    .method-cards {
+      max-width: 600px; margin: 16px auto 0; display: none;
+      gap: 10px; flex-wrap: wrap; justify-content: center;
+    }
+    .method-cards.visible { display: flex; animation: fadeUp 0.35s ease; }
+    .method-card {
+      flex: 1 1 160px; max-width: 190px; background: #fff;
+      border: 1px solid rgba(0,76,148,0.1); border-radius: 14px;
+      padding: 18px 14px; text-align: center; box-shadow: 0 2px 12px rgba(0,76,148,0.06);
+    }
+    .method-card-pct { font-size: 30px; font-weight: 800; line-height: 1; }
+    .method-card-label { font-size: 14px; font-weight: 700; color: var(--azul); margin-top: 4px; }
+    .method-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-top: 4px; }
+
+    /* ─── Container ─── */
+    .main-container { max-width: 880px; margin: 0 auto; padding: 28px 24px 40px; }
+
+    /* ─── Desktop Grid ─── */
+    .roles-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 10px; margin-bottom: 24px;
+    }
+    .role-btn {
+      background: rgba(255,255,255,0.6); border: 1.5px solid rgba(0,76,148,0.1);
+      border-radius: 14px; padding: 18px 10px; cursor: pointer; text-align: center;
+      transition: all 0.25s ease; font-family: inherit; position: relative; overflow: hidden;
+    }
+    .role-btn:hover { box-shadow: 0 4px 16px rgba(0,76,148,0.1); }
+    .role-btn.active {
+      background: #fff; border: 2px solid var(--azul); transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,76,148,0.15);
+    }
+    .role-btn .accent-bar {
+      display: none; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--laranja); border-radius: 2px 2px 0 0;
+    }
+    .role-btn.active .accent-bar { display: block; }
+    .role-btn .icon { font-size: 26px; margin-bottom: 6px; }
+    .role-btn .label { font-size: 12px; font-weight: 600; color: var(--text-body); line-height: 1.3; }
+    .role-btn.active .label { font-weight: 700; color: var(--azul); }
+
+    .hint {
+      text-align: center; padding: 44px 20px; color: var(--text-muted);
+      font-size: 15px; font-style: italic; animation: pulse 3s ease-in-out infinite;
+    }
+
+    /* ─── Detail Panel ─── */
+    .role-detail {
+      display: none; background: #fff; border: 1.5px solid rgba(0,76,148,0.12);
+      border-radius: 18px; padding: 26px 24px; box-shadow: 0 4px 20px rgba(0,76,148,0.06);
+      animation: fadeUp 0.3s ease;
+    }
+    .role-detail.visible { display: block; }
+    .role-detail.highlight {
+      border: 2px solid var(--azul); box-shadow: 0 0 0 4px rgba(0,76,148,0.1);
+    }
+    .detail-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .detail-header .icon { font-size: 30px; }
+    .detail-header h2 {
+      margin: 0; font-size: 20px; font-weight: 700; color: var(--azul); font-family: var(--font-display);
+    }
+    .detail-header .tagline { margin: 2px 0 0; font-size: 13px; color: var(--laranja); font-weight: 600; }
+
+    .resp-list { display: flex; flex-direction: column; gap: 6px; }
+    .resp-item {
+      display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px;
+      border-radius: 10px; background: rgba(0,76,148,0.04); border: 1px solid rgba(0,76,148,0.06);
+    }
+    .resp-num {
+      min-width: 22px; height: 22px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px;
+    }
+    .resp-text { font-size: 13px; line-height: 1.55; color: var(--text-body); }
+
+    /* ─── Accordion (mobile) ─── */
+    .accordion { display: none; flex-direction: column; gap: 8px; }
+    .accordion-item {
+      border-radius: 14px; overflow: hidden;
+      background: rgba(255,255,255,0.7); border: 1px solid rgba(0,76,148,0.1);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: all 0.3s ease;
+    }
+    .accordion-item.open {
+      background: #fff; border: 1.5px solid var(--azul);
+      box-shadow: 0 4px 20px rgba(0,76,148,0.12);
+    }
+    .accordion-trigger {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border: none; background: transparent;
+      cursor: pointer; font-family: inherit; min-height: 52px; text-align: left;
+    }
+    .accordion-trigger .icon { font-size: 24px; flex-shrink: 0; }
+    .accordion-trigger .title { font-size: 15px; font-weight: 700; color: var(--azul); }
+    .accordion-trigger .tagline {
+      display: none; font-size: 11px; color: var(--laranja); font-weight: 600; margin-top: 1px;
+    }
+    .accordion-item.open .accordion-trigger .tagline { display: block; }
+    .accordion-chevron {
+      font-size: 12px; width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(0,76,148,0.08); color: var(--azul);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0; transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+    .accordion-item.open .accordion-chevron {
+      background: var(--azul); color: #fff; transform: rotate(180deg);
+    }
+    .accordion-content {
+      max-height: 0; overflow: hidden; padding: 0 16px;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+    }
+    .accordion-item.open .accordion-content { padding: 0 16px 16px; }
+
+    /* ─── Modal (tiny viewport) ─── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,30,60,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal-content {
+      background: #fff; border-radius: 18px; width: 100%; max-width: 400px; max-height: 90vh;
+      overflow: auto; padding: 20px 18px; position: relative;
+      box-shadow: 0 20px 60px rgba(0,30,60,0.3); animation: scaleIn 0.25s ease;
+    }
+    .modal-close {
+      position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%;
+      border: none; background: rgba(0,76,148,0.08); color: var(--azul);
+      font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .modal-header .icon { font-size: 28px; }
+    .modal-header .title { font-size: 18px; font-weight: 700; color: var(--azul); }
+    .modal-header .tagline { font-size: 12px; color: var(--laranja); font-weight: 600; }
+
+    /* Tiny buttons */
+    .tiny-list { display: none; flex-direction: column; gap: 8px; }
+    .tiny-btn {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px;
+      border: 1px solid rgba(0,76,148,0.1); background: rgba(255,255,255,0.8);
+      cursor: pointer; font-family: inherit; text-align: left; min-height: 52px; width: 100%;
+    }
+    .tiny-btn .icon { font-size: 22px; }
+    .tiny-btn .label { flex: 1; font-size: 14px; font-weight: 600; color: var(--azul); }
+    .tiny-btn .arrow { font-size: 11px; color: var(--text-muted); }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center; padding: 20px 24px 28px;
+      border-top: 1px solid rgba(0,76,148,0.06);
+    }
+    .footer-inner {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; color: var(--text-muted); font-weight: 500;
+    }
+    .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--laranja); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 767px) {
+      .header { padding: 36px 20px 28px; }
+      .header h1 { font-size: clamp(24px, 7vw, 32px); }
+      .header-subtitle { font-size: 14px; }
+      .intro-box { padding: 18px 16px; }
+      .intro-box p { font-size: 13px; }
+      .roles-grid, .hint, .role-detail { display: none !important; }
+      .accordion { display: flex; }
+      .main-container { padding: 20px 16px 32px; }
+    }
+
+    @media (max-width: 767px) and (max-height: 499px) {
+      .accordion { display: none !important; }
+      .tiny-list { display: flex; }
+    }
+
+    /* JS-disabled fallback */
+    noscript .accordion-content { max-height: none !important; padding: 0 16px 16px !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-orb-1"></div>
+    <div class="header-orb-2"></div>
+    <div class="header-badge">Senac · PDI</div>
+    <h1>Papéis e Responsabilidades no PDI</h1>
+    <p class="header-subtitle">Conheça o papel de cada ator no processo e entenda como todos contribuem para o desenvolvimento contínuo.</p>
+    <div class="intro-box">
+      <p>O Plano de Desenvolvimento Individual (PDI) é uma das principais ferramentas Institucionais para promover o aprendizado contínuo, fortalecer competências e alinhar o crescimento profissional às necessidades estratégicas do SENAC.</p>
+      <p>Mais do que um conjunto de etapas, trata-se de um processo de desenvolvimento vivo, dinâmico e compartilhado, no qual cada pessoa tem papel fundamental.</p>
+    </div>
+  </header>
+
+  <!-- Methodology -->
+  <div class="method-section">
+    <button class="method-btn" id="methodBtn" onclick="toggleMethod()">
+      <span style="font-size:16px">📐</span>
+      Metodologia 70:20:10
+      <span class="method-arrow">▼</span>
+    </button>
+    <div class="method-cards" id="methodCards">
+      <div class="method-card">
+        <div class="method-card-pct" style="color:var(--azul)">70%</div>
+        <div class="method-card-label">Vivências</div>
+        <div class="method-card-desc">Aprendizagem na prática, desafios reais do trabalho</div>
+      </div>
+      <div class="method-card">
+        <div class="method-card-pct" style="color:var(--laranja)">20%</div>
+        <div class="method-card-label">Trocas</div>
+        <div class="method-card-desc">Interações com colegas, feedbacks, mentorias</div>
+      </div>
+      <div class="method-card">
+        <div class="method-card-pct" style="color:var(--azul-light)">10%</div>
+        <div class="method-card-label">Formais</div>
+        <div class="method-card-desc">Cursos, treinamentos, leituras estruturadas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-container">
+
+    <!-- Desktop Grid -->
+    <div class="roles-grid" id="rolesGrid"></div>
+    <div class="hint" id="hint">☝️ Clique em um papel acima para ver suas responsabilidades</div>
+    <div class="role-detail" id="roleDetail"></div>
+
+    <!-- Mobile Accordion -->
+    <div class="accordion" id="accordion"></div>
+
+    <!-- Tiny viewport buttons -->
+    <div class="tiny-list" id="tinyList"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-dot"></div>
+      PDI · Plano de Desenvolvimento Individual · Senac
+    </div>
+  </footer>
+
+  <script>
+    const roles = [
+      { id:"participante", icon:"🧭", title:"Participante", tagline:"Protagonista do próprio desenvolvimento", accent:"var(--laranja)", responsibilities:["Participa das atividades de preparação orientadas pela gerência de pessoal","Apropria-se das competências essenciais e dos seus talentos","Organiza-se para participar das atividades do calendário institucional do PDI","Solicita feedbacks para ampliar sua percepção sobre necessidades de desenvolvimento","Reflete sobre comportamento e desempenho, elencando prioridades de desenvolvimento","Elabora plano de ação considerando a Metodologia 70:20:10","Registra seu PDI na plataforma","Agenda e realiza conversa com o tutor de desenvolvimento","Ajusta o PDI após conversa com tutor e envia para validação","Executa as ações conforme o planejamento","Reflete sobre avanços observáveis e adapta o plano quando necessário","Mantém atualizados o status das ações na plataforma"] },
+      { id:"tutor", icon:"🤝", title:"Tutor de Desenvolvimento", tagline:"Orienta, apoia e facilita o desenvolvimento da equipe", accent:"var(--azul-light)", responsibilities:["É exemplo ao planejar e executar o seu próprio PDI","Constrói estratégias do movimento local do PDI com Ponto Focal e Gerência","Incentiva a participação da equipe nas atividades do calendário do PDI","Prepara-se para as conversas de desenvolvimento","Resgata feedbacks e alinhamentos realizados durante o ciclo","Conecta necessidades individuais às necessidades da área","Apoia a definição de objetivos e ações de desenvolvimento","Orienta sobre o objetivo opcional, avaliando viabilidade","Ajuda a identificar formas diversas de aprendizagem (70:20:10)","Incorpora o PDI à rotina da área (delegar, distribuir, oportunizar)","Mantém o tema do PDI na equipe, incentivando a priorização do tempo","Conduz conversas de feedback e acompanhamento durante todo o ciclo"] },
+      { id:"pontofocal", icon:"🔗", title:"Ponto Focal de PDI", tagline:"Elo entre a GEP e a unidade", accent:"var(--laranja)", responsibilities:["Representa a GEP localmente, assegurando implementação do PDI na unidade","Participa das reuniões com a GEP para entendimento das orientações","Providencia a compra e entrega do livro Descubra seus Pontos Fortes 2.0","Orienta sobre o Curso 'Jogo de Competências' e o autoinstrucional de Talentos","Organiza os movimentos logísticos das atividades do PDI","Monitora o ingresso de novos funcionários no processo de PDI","Articula ações e comunicação local para engajamento das equipes","Atua como referência para esclarecimento de dúvidas sobre o PDI","Identifica necessidades e promove plantões de dúvidas","Solicita à GEP análise e compartilhamento de relatórios de PDI"] },
+      { id:"tecnico", icon:"📚", title:"Técnico Educacional", tagline:"Papel essencial no PDI dos docentes", accent:"var(--azul-light)", responsibilities:["Facilita atividades pedagógicas que aprofundam competências específicas docentes","Realiza conversas de feedback com docentes sobre competências específicas","Contribui para a reflexão docente sem assumir o papel do tutor","Atua como parceiro estratégico do técnico de área no PDI do docente","Alinha feedbacks e apoia ações de desenvolvimento pedagógico","Realiza facilitação de grupos em atividades do PDI"] },
+      { id:"gerente", icon:"🏛️", title:"Gerente", tagline:"Patrocinador do movimento do PDI na unidade", accent:"var(--laranja)", responsibilities:["Patrocina o PDI na unidade, comunicando importância e acompanhando implementação","Inclui a pauta do PDI nas reuniões locais","Acompanha o relatório com equipe gestora e Ponto Focal","Incentiva ações de mobilização quando necessário","Conecta o PDI aos demais movimentos institucionais","Conecta líderes iniciantes a líderes mais experientes","Estimula troca, aprendizagem e fortalecimento de práticas de tutoria","Desempenha atribuições de tutor para a equipe gestora"] }
+    ];
+
+    let activeDesktop = null;
+    let activeAccordion = null;
+
+    function buildRespHTML(items, accent) {
+      return '<div class="resp-list">' + items.map((item, i) =>
+        `<div class="resp-item" style="opacity:0;animation:respFade 0.3s ease ${i*0.04}s forwards">
+          <div class="resp-num" style="background:${accent}">${String(i+1).padStart(2,'0')}</div>
+          <span class="resp-text">${item}</span>
+        </div>`
+      ).join('') + '</div>';
+    }
+
+    /* ─── Desktop ─── */
+    function renderDesktopGrid() {
+      const grid = document.getElementById('rolesGrid');
+      grid.innerHTML = roles.map(r =>
+        `<button class="role-btn" id="dbtn-${r.id}" onclick="selectDesktop('${r.id}')">
+          <div class="accent-bar"></div>
+          <div class="icon">${r.icon}</div>
+          <div class="label">${r.title}</div>
+        </button>`
+      ).join('');
+    }
+
+    function selectDesktop(id) {
+      const hint = document.getElementById('hint');
+      const detail = document.getElementById('roleDetail');
+
+      if (activeDesktop === id) {
+        activeDesktop = null;
+        hint.style.display = 'block';
+        detail.classList.remove('visible', 'highlight');
+        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+        return;
+      }
+
+      activeDesktop = id;
+      const role = roles.find(r => r.id === id);
+      hint.style.display = 'none';
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('dbtn-' + id).classList.add('active');
+
+      detail.innerHTML = `
+        <div class="detail-header">
+          <span class="icon">${role.icon}</span>
+          <div>
+            <h2>${role.title}</h2>
+            <p class="tagline">${role.tagline}</p>
+          </div>
+        </div>
+        ${buildRespHTML(role.responsibilities, role.accent)}`;
+      detail.classList.add('visible', 'highlight');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(() => detail.classList.remove('highlight'), 2000);
+    }
+
+    /* ─── Mobile Accordion ─── */
+    function renderAccordion() {
+      const acc = document.getElementById('accordion');
+      acc.innerHTML = roles.map(r =>
+        `<div class="accordion-item" id="acc-${r.id}">
+          <button class="accordion-trigger" onclick="toggleAccordion('${r.id}')" aria-expanded="false">
+            <span class="icon">${r.icon}</span>
+            <div style="flex:1">
+              <div class="title">${r.title}</div>
+              <div class="tagline">${r.tagline}</div>
+            </div>
+            <span class="accordion-chevron">▼</span>
+          </button>
+          <div class="accordion-content" id="acc-content-${r.id}">
+            ${buildRespHTML(r.responsibilities, r.accent)}
+          </div>
+        </div>`
+      ).join('');
+    }
+
+    function toggleAccordion(id) {
+      const item = document.getElementById('acc-' + id);
+      const content = document.getElementById('acc-content-' + id);
+
+      if (activeAccordion === id) {
+        item.classList.remove('open');
+        content.style.maxHeight = '0';
+        activeAccordion = null;
+        return;
+      }
+
+      // Close previous
+      if (activeAccordion) {
+        const prev = document.getElementById('acc-' + activeAccordion);
+        const prevContent = document.getElementById('acc-content-' + activeAccordion);
+        if (prev) prev.classList.remove('open');
+        if (prevContent) prevContent.style.maxHeight = '0';
+      }
+
+      activeAccordion = id;
+      item.classList.add('open');
+      content.style.maxHeight = content.scrollHeight + 20 + 'px';
+    }
+
+    /* ─── Tiny viewport ─── */
+    function renderTinyList() {
+      const list = document.getElementById('tinyList');
+      list.innerHTML = roles.map(r =>
+        `<button class="tiny-btn" onclick="openModal('${r.id}')">
+          <span class="icon">${r.icon}</span>
+          <span class="label">${r.title}</span>
+          <span class="arrow">Ver →</span>
+        </button>`
+      ).join('');
+    }
+
+    function openModal(id) {
+      const role = roles.find(r => r.id === id);
+      const modal = document.getElementById('modal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <button class="modal-close" onclick="closeModal()" aria-label="Fechar">✕</button>
+        <div class="modal-header">
+          <span class="icon">${role.icon}</span>
+          <div>
+            <div class="title">${role.title}</div>
+            <div class="tagline">${role.tagline}</div>
+          </div>
+        </div>
+        ${buildRespHTML(role.responsibilities, role.accent)}`;
+      modal.classList.add('visible');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('visible');
+    }
+
+    // Close modal on overlay click
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+    /* ─── Methodology ─── */
+    function toggleMethod() {
+      const btn = document.getElementById('methodBtn');
+      const cards = document.getElementById('methodCards');
+      btn.classList.toggle('active');
+      cards.classList.toggle('visible');
+    }
+
+    /* ─── Init ─── */
+    renderDesktopGrid();
+    renderAccordion();
+    renderTinyList();
+  </script>
+</body>
+</html>
