@@ -374,11 +374,87 @@
 
   <script>
     const roles = [
-      { id:"participante", icon:"🧭", title:"Participante", tagline:"Protagonista do próprio desenvolvimento", accent:"var(--laranja)", responsibilities:["Participa das atividades de preparação orientadas pela gerência de pessoal","Apropria-se das competências essenciais e dos seus talentos","Organiza-se para participar das atividades do calendário institucional do PDI","Solicita feedbacks para ampliar sua percepção sobre necessidades de desenvolvimento","Reflete sobre comportamento e desempenho, elencando prioridades de desenvolvimento","Elabora plano de ação considerando a Metodologia 70:20:10","Registra seu PDI na plataforma","Agenda e realiza conversa com o tutor de desenvolvimento","Ajusta o PDI após conversa com tutor e envia para validação","Executa as ações conforme o planejamento","Reflete sobre avanços observáveis e adapta o plano quando necessário","Mantém atualizados o status das ações na plataforma"] },
-      { id:"tutor", icon:"🤝", title:"Tutor de Desenvolvimento", tagline:"Orienta, apoia e facilita o desenvolvimento da equipe", accent:"var(--azul-light)", responsibilities:["É exemplo ao planejar e executar o seu próprio PDI","Constrói estratégias do movimento local do PDI com Ponto Focal e Gerência","Incentiva a participação da equipe nas atividades do calendário do PDI","Prepara-se para as conversas de desenvolvimento","Resgata feedbacks e alinhamentos realizados durante o ciclo","Conecta necessidades individuais às necessidades da área","Apoia a definição de objetivos e ações de desenvolvimento","Orienta sobre o objetivo opcional, avaliando viabilidade","Ajuda a identificar formas diversas de aprendizagem (70:20:10)","Incorpora o PDI à rotina da área (delegar, distribuir, oportunizar)","Mantém o tema do PDI na equipe, incentivando a priorização do tempo","Conduz conversas de feedback e acompanhamento durante todo o ciclo"] },
-      { id:"pontofocal", icon:"🔗", title:"Ponto Focal de PDI", tagline:"Elo entre a GEP e a unidade", accent:"var(--laranja)", responsibilities:["Representa a GEP localmente, assegurando implementação do PDI na unidade","Participa das reuniões com a GEP para entendimento das orientações","Providencia a compra e entrega do livro Descubra seus Pontos Fortes 2.0","Orienta sobre o Curso 'Jogo de Competências' e o autoinstrucional de Talentos","Organiza os movimentos logísticos das atividades do PDI","Monitora o ingresso de novos funcionários no processo de PDI","Articula ações e comunicação local para engajamento das equipes","Atua como referência para esclarecimento de dúvidas sobre o PDI","Identifica necessidades e promove plantões de dúvidas","Solicita à GEP análise e compartilhamento de relatórios de PDI"] },
-      { id:"tecnico", icon:"📚", title:"Técnico Educacional", tagline:"Papel essencial no PDI dos docentes", accent:"var(--azul-light)", responsibilities:["Facilita atividades pedagógicas que aprofundam competências específicas docentes","Realiza conversas de feedback com docentes sobre competências específicas","Contribui para a reflexão docente sem assumir o papel do tutor","Atua como parceiro estratégico do técnico de área no PDI do docente","Alinha feedbacks e apoia ações de desenvolvimento pedagógico","Realiza facilitação de grupos em atividades do PDI"] },
-      { id:"gerente", icon:"🏛️", title:"Gerente", tagline:"Patrocinador do movimento do PDI na unidade", accent:"var(--laranja)", responsibilities:["Patrocina o PDI na unidade, comunicando importância e acompanhando implementação","Inclui a pauta do PDI nas reuniões locais","Acompanha o relatório com equipe gestora e Ponto Focal","Incentiva ações de mobilização quando necessário","Conecta o PDI aos demais movimentos institucionais","Conecta líderes iniciantes a líderes mais experientes","Estimula troca, aprendizagem e fortalecimento de práticas de tutoria","Desempenha atribuições de tutor para a equipe gestora"] }
+      {
+        id:"participante", icon:"🧭", title:"Participante",
+        tagline:"Protagonista do próprio desenvolvimento",
+        accent:"var(--laranja)",
+        responsibilities:[
+          "Participa das atividades de preparação orientadas pela Gerência de Pessoal (GEP).",
+          "Apropria-se das competências essenciais e dos seus talentos.",
+          "Organiza-se para participar e realizar as atividades do calendário institucional do PDI.",
+          "Solicita feedbacks para ampliar sua percepção sobre necessidades de desenvolvimento e reconhecer comportamentos já evidenciados.",
+          "Reflete individualmente sobre seu comportamento e desempenho, elencando prioridades de desenvolvimento, considerando as necessidades da função atual e os desafios da área.",
+          "Elabora plano de ação de desenvolvimento, considerando diferentes formas de aprendizagem, especialmente vivências e trocas com colegas (metodologia 70:20:10).",
+          "Registra seu PDI na plataforma.",
+          "Agenda e realiza a conversa com seu tutor de desenvolvimento, apresentando as reflexões das conversas de feedback, sua percepção sobre competências já desenvolvidas, intenção de objetivo de desenvolvimento e ações planejadas.",
+          "Ajusta o PDI, quando necessário, considerando os elementos da conversa de desenvolvimento com o tutor e envia para validação.",
+          "Executa as ações do plano conforme o planejamento estabelecido.",
+          "Reflete, durante a execução, sobre avanços observáveis no seu comportamento e adapta o plano, quando necessário.",
+          "Agenda conversas com o tutor para acompanhamento do plano, sempre que julgar necessário.",
+          "Mantém atualizados, na plataforma, o status das ações e o andamento do seu plano.",
+          "<strong>Observação para Docentes:</strong> Além das atribuições gerais do participante, os docentes devem considerar sua prática pedagógica no PDI, articulando competências essenciais e específicas da docência, solicitando feedback sobre atuação educacional ao Técnico Educacional, refletindo sobre metodologias e relação com estudantes, e planejando ações que integrem cursos, vivências pedagógicas e trocas entre pares, mantendo o plano atualizado conforme orientações institucionais."
+        ]
+      },
+      {
+        id:"tutor", icon:"🤝", title:"Tutor de Desenvolvimento",
+        tagline:"Orienta, apoia e facilita o desenvolvimento da equipe",
+        accent:"var(--azul-light)",
+        responsibilities:[
+          "É exemplo para a equipe no planejar e executar o seu próprio PDI, mostrando na prática a importância do desenvolvimento contínuo.",
+          "Constrói, junto ao ponto focal e à gerência, as estratégias do movimento local do PDI.",
+          "Incentiva a participação da equipe nas atividades previstas no calendário institucional de PDI.",
+          "Prepara-se para as conversas de desenvolvimento considerando os talentos, competências essenciais e percepções de desempenho observadas ao longo do ciclo.",
+          "Resgata, na conversa de desenvolvimento, os feedbacks e alinhamentos já realizados durante o ciclo, apoiando o funcionário a reconhecer comportamentos já desenvolvidos e aqueles que precisam ser fortalecidos.",
+          "Dá sentido ao plano, conectando as necessidades individuais às necessidades da área para orientar a priorização das competências a desenvolver.",
+          "Apoia a definição e a escolha dos objetivos e ações de desenvolvimento, considerando as necessidades do Senac e as oportunidades reais do contexto de trabalho.",
+          "Orienta sobre o objetivo opcional, caso não esteja ligado à função atual, ajudando o funcionário a avaliar se a proposta é viável e sustentável diante de suas responsabilidades e do plano de ação do restante da equipe.",
+          "Ajuda o funcionário a identificar formas diversas de aprendizagem, conforme a metodologia 70:20:10.",
+          "Incorpora o PDI à rotina da área, utilizando-o como referência para delegar atividades, distribuir responsabilidades e oferecer oportunidades de aprendizagem prática no escopo de trabalho, desafios e desempenho esperado para a função atual, tendo em vista os objetivos de desenvolvimento.",
+          "Mantém o tema do PDI vivo na equipe, incentivando a priorização do tempo para o desenvolvimento e para a execução das ações planejadas.",
+          "Conduz, durante todo o ciclo, conversas de feedback, alinhamento de expectativas e de acompanhamento do plano de ação, quando necessário."
+        ]
+      },
+      {
+        id:"pontofocal", icon:"🔗", title:"Ponto Focal de PDI",
+        tagline:"Elo entre a GEP e a unidade",
+        accent:"var(--laranja)",
+        responsibilities:[
+          "Representa a GEP localmente, assegurando a adequada implementação do processo de PDI na unidade.",
+          "Participa das reuniões com a GEP para entendimento das orientações e desdobramentos das atividades locais.",
+          "Providencia a compra e entrega o livro \"Descubra seus Pontos Fortes 2.0\" aos funcionários a partir de 3 meses de admissão, orientando-os sobre o processo de PDI e também o orienta sobre a realização do Jogo das Competências Essenciais e do autoinstrucional Descubra e Potencialize seus talentos que deverão ser feitos a qualquer momento antes do ingresso no processo de PDI.",
+          "Organiza os movimentos logísticos das atividades do PDI.",
+          "Monitora o ingresso dos novos funcionários no processo de PDI e articula com a GEP a quantidade de turmas e inserção no sistema.",
+          "Articula as ações e comunicação local, juntamente com as lideranças, para engajamento das equipes no processo de PDI.",
+          "Atua como referência para esclarecimento de dúvidas de funcionários e lideranças sobre o PDI.",
+          "Identifica a necessidade de plantões de dúvidas e promove esses momentos para fortalecer a compreensão do processo.",
+          "Solicita à GEP, analisa e compartilha relatórios de PDI com as lideranças, sugerindo ações locais de mobilização, quando necessário.",
+          "<strong>Na sede, editora e hotéis:</strong> Identifica, junto às lideranças, necessidades de desenvolvimento coletivo (PDC) da unidade e solicita turmas locais à GEP."
+        ]
+      },
+      {
+        id:"tecnico", icon:"📚", title:"Técnico Educacional",
+        tagline:"Fortalece o desenvolvimento docente",
+        accent:"var(--azul-light)",
+        responsibilities:[
+          "Facilita atividades pedagógicas que aprofundam as competências específicas docentes.",
+          "Realiza conversas de feedback com docentes, considerando as competências específicas e contexto educacional, contribuindo para a reflexão sobre suas práticas, sem assumir o papel do tutor (técnico de área) na conversa de desenvolvimento.",
+          "Atua como parceiro estratégico do técnico de área no PDI do docente, alinhando feedbacks e apoiando ações de desenvolvimento pedagógico.",
+          "Realiza a facilitação de grupos em atividades do PDI com o apoio do ponto focal."
+        ]
+      },
+      {
+        id:"gerente", icon:"🏛️", title:"Gerente",
+        tagline:"Patrocinador do movimento do PDI na unidade",
+        accent:"var(--laranja)",
+        responsibilities:[
+          "Patrocina o movimento de PDI na unidade, comunicando sua importância e acompanhando a implementação.",
+          "Inclui a pauta do PDI nas reuniões locais e acompanha os relatórios junto à equipe gestora e ao ponto focal.",
+          "Incentiva ações de mobilização, quando necessário, garantindo que o PDI seja usado como ferramenta de desenvolvimento e gestão.",
+          "Conecta o PDI aos demais movimentos institucionais, alinhando expectativas e prioridades da unidade.",
+          "Conecta líderes iniciantes a líderes mais experientes, estimulando troca, aprendizagem e fortalecimento de práticas como tutor de desenvolvimento.",
+          "Desempenha as atribuições de tutor de desenvolvimento para a equipe gestora, garantindo coerência, exemplo e alinhamento no processo."
+        ]
+      }
     ];
 
     let activeDesktop = null;
