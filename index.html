@@ -271,6 +271,28 @@
     .tiny-btn .label { flex: 1; font-size: 14px; font-weight: 600; color: var(--azul); }
     .tiny-btn .arrow { font-size: 11px; color: var(--text-muted); }
 
+    /* ─── Role Description ─── */
+    .role-desc {
+      font-size: 13.5px; line-height: 1.65; color: var(--text-body);
+      font-style: italic; margin-bottom: 16px;
+      padding: 12px 14px; background: rgba(0,76,148,0.04);
+      border-left: 3px solid var(--azul-light); border-radius: 0 8px 8px 0;
+    }
+    .resp-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--azul); margin-bottom: 8px;
+      padding-bottom: 5px; border-bottom: 2px solid var(--azul);
+      display: inline-block;
+    }
+    .resp-note {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px; border-radius: 10px;
+      background: rgba(247,148,29,0.1); border: 1px solid rgba(247,148,29,0.3);
+      margin-top: 4px;
+    }
+    .resp-note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .resp-note-text { font-size: 13px; line-height: 1.55; color: var(--text-body); }
+
     /* ─── Footer ─── */
     .footer {
       text-align: center; padding: 20px 24px 28px;
@@ -377,6 +399,7 @@
       {
         id:"participante", icon:"🧭", title:"Participante",
         tagline:"Protagonista do próprio desenvolvimento",
+        description:"O participante é protagonista do próprio desenvolvimento. Ele se envolve ativamente nas etapas do PDI, buscando aprendizado contínuo e alinhamento com sua função e os desafios da área.",
         accent:"var(--laranja)",
         responsibilities:[
           "Participa das atividades de preparação orientadas pela Gerência de Pessoal (GEP).",
@@ -398,6 +421,7 @@
       {
         id:"tutor", icon:"🤝", title:"Tutor de Desenvolvimento",
         tagline:"Orienta, apoia e facilita o desenvolvimento da equipe",
+        description:"O papel do tutor é orientar, apoiar e facilitar o desenvolvimento da equipe. Ele atua como referência e estímulo para que cada pessoa construa seu próprio caminho de crescimento.",
         accent:"var(--azul-light)",
         responsibilities:[
           "É exemplo para a equipe no planejar e executar o seu próprio PDI, mostrando na prática a importância do desenvolvimento contínuo.",
@@ -417,6 +441,7 @@
       {
         id:"pontofocal", icon:"🔗", title:"Ponto Focal de PDI",
         tagline:"Elo entre a GEP e a unidade",
+        description:"O ponto focal atua como elo entre a GEP e a unidade, garantindo que o processo de PDI aconteça de forma organizada e compreendida por todos.",
         accent:"var(--laranja)",
         responsibilities:[
           "Representa a GEP localmente, assegurando a adequada implementação do processo de PDI na unidade.",
@@ -434,6 +459,7 @@
       {
         id:"tecnico", icon:"📚", title:"Técnico Educacional",
         tagline:"Fortalece o desenvolvimento docente",
+        description:"O técnico educacional fortalece o desenvolvimento docente ao facilitar práticas pedagógicas, oferecer feedback alinhado às competências e atuar em parceria com o técnico de área para apoiar ações de aprendizagem no PDI.",
         accent:"var(--azul-light)",
         responsibilities:[
           "Facilita atividades pedagógicas que aprofundam as competências específicas docentes.",
@@ -445,6 +471,7 @@
       {
         id:"gerente", icon:"🏛️", title:"Gerente",
         tagline:"Patrocinador do movimento do PDI na unidade",
+        description:"O gerente é patrocinador do movimento de PDI na unidade, garantindo alinhamento, engajamento e coerência no processo.",
         accent:"var(--laranja)",
         responsibilities:[
           "Patrocina o movimento de PDI na unidade, comunicando sua importância e acompanhando a implementação.",
@@ -460,13 +487,27 @@
     let activeDesktop = null;
     let activeAccordion = null;
 
+    function isNote(item) {
+      return item.startsWith('<strong>Observação') || item.startsWith('<strong>Na sede');
+    }
+
     function buildRespHTML(items, accent) {
-      return '<div class="resp-list">' + items.map((item, i) =>
-        `<div class="resp-item" style="opacity:0;animation:respFade 0.3s ease ${i*0.04}s forwards">
-          <div class="resp-num" style="background:${accent}">${String(i+1).padStart(2,'0')}</div>
-          <span class="resp-text">${item}</span>
+      const regular = items.filter(i => !isNote(i));
+      const notes = items.filter(i => isNote(i));
+      const listHTML = '<div class="resp-label">Responsabilidades:</div><div class="resp-list">' +
+        regular.map((item, i) =>
+          `<div class="resp-item" style="opacity:0;animation:respFade 0.3s ease ${i*0.04}s forwards">
+            <div class="resp-num" style="background:${accent}">${String(i+1).padStart(2,'0')}</div>
+            <span class="resp-text">${item}</span>
+          </div>`
+        ).join('') + '</div>';
+      const notesHTML = notes.map(note =>
+        `<div class="resp-note" style="opacity:0;animation:respFade 0.4s ease 0.2s forwards">
+          <span class="resp-note-icon">📌</span>
+          <span class="resp-note-text">${note}</span>
         </div>`
-      ).join('') + '</div>';
+      ).join('');
+      return listHTML + notesHTML;
     }
 
     /* ─── Desktop ─── */
@@ -507,6 +548,7 @@
             <p class="tagline">${role.tagline}</p>
           </div>
         </div>
+        ${role.description ? `<p class="role-desc">${role.description}</p>` : ''}
         ${buildRespHTML(role.responsibilities, role.accent)}`;
       detail.classList.add('visible', 'highlight');
       detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -527,6 +569,7 @@
             <span class="accordion-chevron">▼</span>
           </button>
           <div class="accordion-content" id="acc-content-${r.id}">
+            ${r.description ? `<p class="role-desc">${r.description}</p>` : ''}
             ${buildRespHTML(r.responsibilities, r.accent)}
           </div>
         </div>`
@@ -582,6 +625,7 @@
             <div class="tagline">${role.tagline}</div>
           </div>
         </div>
+        ${role.description ? `<p class="role-desc">${role.description}</p>` : ''}
         ${buildRespHTML(role.responsibilities, role.accent)}`;
       modal.classList.add('visible');
     }
